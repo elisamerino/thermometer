@@ -1,19 +1,23 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+	margin: 0;
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+}
+
+.healthy {
+	background-color: rgb(0, 255, 0);
 }
 
 .container {
-    padding: 25px calc((100vw - 960px) / 2);
+	padding: 25px calc((100vw - 960px) / 2);
 
-    @media (max-width: 980px) {
-        padding: 25px 10px;
-    }
+	@media (max-width: 980px) {
+		padding: 25px 10px;
+	}
 }
