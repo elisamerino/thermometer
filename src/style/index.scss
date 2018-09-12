@@ -1,15 +1,8 @@
 @import './base.scss';
+@import './card.scss';
 
-.content-wrapper {
+.poke-flex {
     display: flex;
-}
-
-.food-list {
-    flex-grow: 1;
-    padding: 25px;
-}
-
-.today {
-    padding: 25px;
-    width: 35%;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }

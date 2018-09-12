@@ -1,56 +1,96 @@
 import React from 'react'
-
-import 'bulma/css/bulma.css'
-import FoodBox from './FoodBox'
+import axios from 'axios'
+import Card from './Card'
 import Search from './Search'
-import Today from './Today'
-import foods from '../data/foods.json'
 
 class Application extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            foods,
-            query: '',
+            loading: true,
+            pokemon: [],
+            search: {
+                name: '',
+                minHp: '',
+            },
         }
 
-        this._handleQueryChange = this._handleQueryChange.bind(this)
-        this._handleQtyChange = this._handleQtyChange.bind(this)
+        this._catchPokemon = this._catchPokemon.bind(this)
+        this._searchPokemon = this._searchPokemon.bind(this)
+        this._handleSearchChange = this._handleSearchChange.bind(this)
+    }
+
+    componentDidMount() {
+        axios
+            .get('https://ironhack-pokeapi.herokuapp.com/pokemon')
+            .then(result => {
+                this.setState({ pokemon: result.data, loading: false })
+            })
+            .catch(console.error)
     }
 
     render() {
-        const mappedFoods = this.state.foods
-            .filter((el, index) => el.name.match(new RegExp(`.*${this.state.query}.*`, 'i')))
-            .map((el, index) => (
-                <FoodBox key={index} handleQtyChange={this._handleQtyChange} food={el} />
-            ))
+        if (this.state.loading) {
+            return (
+                <div className="container">
+                    <h1>Loading...</h1>
+                </div>
+            )
+        }
 
+        const mappedPokemon = this.state.pokemon
+            .filter((el, index) => index < 21)
+            .map(el => <Card pokemon={el} catchPokemon={this._catchPokemon} key={el.id} />)
         return (
             <div className="container">
-                <Search query={this.state.query} handleQueryChange={this._handleQueryChange} />
-                <div className="content-wrapper">
-                    <ul className="food-list">{mappedFoods}</ul>
-                    <Today foods={this.state.foods} />
-                </div>
+                <h1>Pokemon</h1>
+                <Search
+                    search={this.state.search}
+                    handleSearchChange={this._handleSearchChange}
+                    searchPokemon={this._searchPokemon}
+                />
+                <div className="poke-flex">{mappedPokemon}</div>
             </div>
         )
     }
 
-    _handleQueryChange(event) {
+    _searchPokemon(event) {
+        event.preventDefault()
+        axios
+            .get(
+                `https://ironhack-pokeapi.herokuapp.com/pokemon?name=${this.state.search.name}&minHp=${
+                    this.state.search.minHp
+                }`
+            )
+            .then(({ data }) => {
+                this.setState({
+                    pokemon: data,
+                })
+            })
+    }
+
+    _handleSearchChange(key, value) {
+        const newSearch = { ...this.state.search }
+
+        newSearch[key] = value
+
         this.setState({
-            query: event.target.value,
+            search: newSearch,
         })
     }
 
-    _handleQtyChange(name, newValue) {
-        if (parseInt(newValue) < 0) newValue = 0
+    _catchPokemon(id) {
+        if (Math.random() < 0.8) return
 
-        this.setState({
-            foods: this.state.foods.map(el => {
-                if (el.name === name) return { ...el, quantity: newValue }
-                return el
-            }),
+        axios.get(`https://ironhack-pokeapi.herokuapp.com/pokemon/${id}`).then(({ data }) => {
+            this.setState({
+                pokemon: this.state.pokemon.map(el => {
+                    if (el.id !== id) return el
+
+                    return data
+                }),
+            })
         })
     }
 }

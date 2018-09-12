@@ -2,17 +2,22 @@ import React from 'react'
 
 const Search = props => {
     return (
-        <div className="search">
+        <form className="search" onSubmit={props.searchPokemon}>
             <input
-                className="input"
+                value={props.search.name}
+                onChange={event => props.handleSearchChange('name', event.target.value)}
                 type="text"
-                onChange={props.handleQueryChange}
-                value={props.query}
-                placeholder="What are you craving for..."
+                placeholder="name"
             />
-            <br />
-            <br />
-        </div>
+            <input
+                value={props.search.minHp}
+                onChange={event => props.handleSearchChange('minHp', event.target.value)}
+                type="number"
+                min="0"
+                placeholder="minHp"
+            />
+            <input type="submit" value="Search" />
+        </form>
     )
 }
 
