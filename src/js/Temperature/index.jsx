@@ -9,7 +9,7 @@ class Temperature extends Component {
 
 		this.state = {
 			temp: 0, // this should be in °Kelvin
-			color: 10
+			color: 'rgb(239, 98, 59)'
 		};
 		this._handleTempChange = this._handleTempChange.bind(this);
 		this._convertTemp = this._convertTemp.bind(this);
@@ -17,8 +17,21 @@ class Temperature extends Component {
 
 	render() {
 		return (
-			<div className="container">
-				<div className="converter" style={styles}>
+			<div
+				className="container"
+				style={{
+					background:
+						'rgb(' +
+						15 +
+						this.state.temp * 10 +
+						',' +
+						(200 - this.state.temp / 2) +
+						',' +
+						(235 - this.state.temp * 3) +
+						')'
+				}}
+			>
+				<div className="converter">
 					<h1>Temperature Converter</h1>
 					{this._handleTempChange}
 					<Control
