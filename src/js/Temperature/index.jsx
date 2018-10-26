@@ -22,14 +22,15 @@ class Temperature extends Component {
 				style={{
 					background:
 						'rgb(' +
-						15 +
-						this.state.temp * 10 +
+						+15 +
+						this.state.temp * 0.15 +
 						',' +
-						(200 - this.state.temp / 2) +
+						(200 - this.state.temp * 0.25) +
 						',' +
-						(235 - this.state.temp * 3) +
+						(245 - this.state.temp * 0.5) +
 						')'
 				}}
+				//maybe adding a breack would be nice
 			>
 				<div className="converter">
 					<h1>Temperature Converter</h1>
