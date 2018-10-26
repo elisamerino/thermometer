@@ -4,6 +4,6 @@
 
 ## Instructions 11.25
 
-1. clone
+```1. clone
 2. $ sudo mongoD
-3. $ npm run dev
+3. $ npm run dev```
